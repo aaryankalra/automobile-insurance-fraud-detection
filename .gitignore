@@ -1,4 +1,8 @@
 /presentation
 /data
-
 /venv
+
+*.pkl
+*.json
+
+new_data.csv
