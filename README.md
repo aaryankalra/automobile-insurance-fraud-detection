@@ -186,6 +186,13 @@ npm run dev
 ---
 
 # Screenshots
+![Home Page](screenshots/home1.png)
+
+![Home Page](screenshots/home2.png)
+
+![Figures Page](screenshots/fig1.png)
+
+![Figures Page](screenshots/fig2.png)
 
 ---
 
