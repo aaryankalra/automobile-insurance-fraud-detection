@@ -6,7 +6,6 @@ const Form = () => {
   const [metadata, setMetadata] = useState(null);
   const [formData, setFormData] = useState({});
   const [model, setModel] = useState("random_forest");
-  const [threshold, setThreshold] = useState(0.25);
   const [result, setResult] = useState(null);
 
   const API_URL = import.meta.env.VITE_API_URL;
@@ -48,12 +47,12 @@ const Form = () => {
       },
       body: JSON.stringify({
         model,
-        threshold,
         data: formData,
       }),
     });
 
     const data = await response.json();
+
     setResult(data);
   };
 
@@ -110,43 +109,30 @@ const Form = () => {
           </div>
 
           <p className="text-xl mt-10 mb-2">Select Model</p>
-          <div className="grid grid-cols-1 items-center md:grid-cols-2 gap-8">
-            <div className="flex flex-col">
-              <label className="mb-2 text-sm font-medium text-gray-700">
-                Model
-              </label>
 
-              <select
-                value={model}
-                onChange={(e) => setModel(e.target.value)}
-                className="border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-              >
-                <option value="random_forest">Random Forest</option>
+          <div className="flex flex-col">
+            <label className="mb-2 text-sm font-medium text-gray-700">
+              Model
+            </label>
 
-                <option value="decision_tree">Decision Tree</option>
-              </select>
-            </div>
-
-            <div className="flex flex-col">
-              <label className="mb-2 text-sm font-medium text-gray-700">
-                Threshold ({threshold})
-              </label>
-
-              <input
-                type="range"
-                min="0.15"
-                max="0.50"
-                step="0.01"
-                value={threshold}
-                onChange={(e) => setThreshold(e.target.value)}
-                className="w-full"
-              />
-            </div>
+            <select
+              value={model}
+              onChange={(e) => setModel(e.target.value)}
+              className="border md:w-1/3 border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+            >
+              {metadata.available_models.map((modelName) => (
+                <option key={modelName} value={modelName}>
+                  {modelName
+                    .replaceAll("_", " ")
+                    .replace(/\b\w/g, (c) => c.toUpperCase())}
+                </option>
+              ))}
+            </select>
           </div>
 
           <button
             type="submit"
-            className="mt-10 w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 transition"
+            className="mt-10 w-full cursor:pointer bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 transition"
           >
             Predict Fraud Probability
           </button>
@@ -154,7 +140,7 @@ const Form = () => {
 
         {result && (
           <div className="mt-10">
-            <Result probability={result.fraud_probability} />
+            <Result result={result} />
           </div>
         )}
       </div>
